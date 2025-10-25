@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Owned Car Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .cta-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+
+        .cars-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .car-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .car-details {
+            padding: 20px;
+        }
+
+        .car-name {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .car-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 0.85em;
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .car-price {
+            font-size: 1.8em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .car-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .modal-body {
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .modal-body p {
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .close-btn:hover {
+            background: #5568d3;
+        }
+
+        @media (max-width: 768px) {
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 Pre-Owned Car Marketplace</h1>
+            <p class="tagline">Find Your Perfect Ride at Unbeatable Prices</p>
+        </header>
+
+        <div class="cta-section">
+            <button class="cta-button" onclick="showSellForm()">Sell Your Car</button>
+        </div>
+
+        <div class="cars-section">
+            <h2 class="section-title">Featured Cars</h2>
+            <div class="cars-grid" id="carsGrid"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-body" id="modalBody"></div>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const cars = [
+            {
+                id: 1,
+                name: "Honda Civic 2019",
+                year: 2019,
+                price: 15999,
+                mileage: "45,000 km",
+                fuel: "Petrol",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "Silver",
+                icon: "🚘",
+                description: "Well-maintained Honda Civic with full service history. Excellent fuel economy and smooth automatic transmission."
+            },
+            {
+                id: 2,
+                name: "Toyota Camry 2020",
+                year: 2020,
+                price: 22500,
+                mileage: "32,000 km",
+                fuel: "Petrol",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "White",
+                icon: "🚗",
+                description: "Premium sedan with advanced safety features, leather seats, and sunroof. Like new condition."
+            },
+            {
+                id: 3,
+                name: "Ford Mustang 2018",
+                year: 2018,
+                price: 28900,
+                mileage: "55,000 km",
+                fuel: "Petrol",
+                transmission: "Manual",
+                owner: "2nd Owner",
+                color: "Red",
+                icon: "🏎",
+                description: "Powerful sports car with V8 engine. Thrilling driving experience with premium sound system."
+            },
+            {
+                id: 4,
+                name: "BMW 3 Series 2021",
+                year: 2021,
+                price: 35000,
+                mileage: "25,000 km",
+                fuel: "Diesel",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "Black",
+                icon: "🚙",
+                description: "Luxury sedan with cutting-edge technology, premium interiors, and exceptional performance."
+            },
+            {
+                id: 5,
+                name: "Hyundai Creta 2020",
+                year: 2020,
+                price: 14500,
+                mileage: "38,000 km",
+                fuel: "Diesel",
+                transmission: "Manual",
+                owner: "1st Owner",
+                color: "Blue",
+                icon: "🚐",
+                description: "Popular SUV with spacious interiors, great fuel efficiency, and comfortable ride quality."
+            },
+            {
+                id: 6,
+                name: "Tesla Model 3 2022",
+                year: 2022,
+                price: 42000,
+                mileage: "15,000 km",
+                fuel: "Electric",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "White",
+                icon: "⚡",
+                description: "Electric vehicle with autopilot, long range battery, and zero emissions. Premium tech features."
+            },
+            {
+                id: 7,
+                name: "Maruti Swift 2019",
+                year: 2019,
+                price: 6500,
+                mileage: "52,000 km",
+                fuel: "Petrol",
+                transmission: "Manual",
+                owner: "2nd Owner",
+                color: "Red",
+                icon: "🚗",
+                description: "Compact hatchback with excellent mileage, easy to drive in city traffic, well maintained."
+            },
+            {
+                id: 8,
+                name: "Jeep Compass 2021",
+                year: 2021,
+                price: 26500,
+                mileage: "28,000 km",
+                fuel: "Diesel",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "Gray",
+                icon: "🚙",
+                description: "Rugged SUV with 4x4 capability, premium features, and commanding road presence."
+            },
+            {
+                id: 9,
+                name: "Audi A4 2020",
+                year: 2020,
+                price: 38500,
+                mileage: "30,000 km",
+                fuel: "Petrol",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "Silver",
+                icon: "🚘",
+                description: "Luxury sedan with quattro all-wheel drive, virtual cockpit, and premium Bang & Olufsen sound."
+            },
+            {
+                id: 10,
+                name: "Kia Seltos 2021",
+                year: 2021,
+                price: 16800,
+                mileage: "22,000 km",
+                fuel: "Petrol",
+                transmission: "Automatic",
+                owner: "1st Owner",
+                color: "Orange",
+                icon:"🚘",
+    
+                description: "Modern SUV with connected car features, spacious cabin, and impressive build quality."
+            }
+        ];
+
+        function renderCars() {
+            const grid = document.getElementById('carsGrid');
+            grid.innerHTML = cars.map(car => `
+                <div class="car-card">
+                    <div class="car-image">${car.icon}</div>
+                    <div class="car-details">
+                        <div class="car-name">${car.name}</div>
+                        <div class="car-price">$${car.price.toLocaleString()}</div>
+                        <div class="car-info">
+                            <div class="info-item">
+                                <span class="info-label">Year</span>
+                                <span class="info-value">${car.year}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Mileage</span>
+                                <span class="info-value">${car.mileage}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Fuel Type</span>
+                                <span class="info-value">${car.fuel}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Transmission</span>
+                                <span class="info-value">${car.transmission}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Owner</span>
+                                <span class="info-value">${car.owner}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Color</span>
+                                <span class="info-value">${car.color}</span>
+                            </div>
+                        </div>
+                        <div class="car-description">${car.description}</div>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="viewDetails(${car.id})">View Details</button>
+                            <button class="btn btn-secondary" onclick="contactSeller(${car.id})">Contact Seller</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewDetails(carId) {
+            const car = cars.find(c => c.id === carId);
+            document.getElementById('modalHeader').textContent = car.name;
+            document.getElementById('modalBody').innerHTML = `
+                <p><strong>Price:</strong> $${car.price.toLocaleString()}</p>
+                <p><strong>Year:</strong> ${car.year}</p>
+                <p><strong>Mileage:</strong> ${car.mileage}</p>
+                <p><strong>Fuel Type:</strong> ${car.fuel}</p>
+                <p><strong>Transmission:</strong> ${car.transmission}</p>
+                <p><strong>Owner:</strong> ${car.owner}</p>
+                <p><strong>Color:</strong> ${car.color}</p>
+                <hr style="margin: 15px 0;">
+                <p><strong>Description:</strong></p>
+                <p>${car.description}</p>
+                <p style="margin-top: 15px;"><strong>Interested?</strong> Contact the seller to schedule a test drive!</p>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function contactSeller(carId) {
+            const car = cars.find(c => c.id === carId);
+            document.getElementById('modalHeader').textContent = 'Contact Seller';
+            document.getElementById('modalBody').innerHTML = `
+                <p>You're interested in: <strong>${car.name}</strong></p>
+                <p>Price: <strong>$${car.price.toLocaleString()}</strong></p>
+                <hr style="margin: 15px 0;">
+                <p>Contact Information:</p>
+                <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                <p><strong>Email:</strong> seller@carmarket.com</p>
+                <p><strong>Available:</strong> Mon-Sat, 9 AM - 6 PM</p>
+                <hr style="margin: 15px 0;">
+                <p>The seller will be notified of your interest. You can also schedule a test drive by calling the number above.</p>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function showSellForm() {
+            document.getElementById('modalHeader').textContent = 'Sell Your Car';
+            document.getElementById('modalBody').innerHTML = `
+                <p>Ready to sell your car? We make it easy!</p>
+                <hr style="margin: 15px 0;">
+                <p><strong>Why Sell With Us?</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Quick and hassle-free process</li>
+                    <li>Best market prices</li>
+                    <li>Free car evaluation</li>
+                    <li>Instant payment</li>
+                    <li>Paperwork assistance</li>
+                </ul>
+                <hr style="margin: 15px 0;">
+                <p><strong>Get Started:</strong></p>
+                <p>📞 Call: +1 (555) 987-6543</p>
+                <p>📧 Email: sellcar@carmarket.com</p>
+                <p>🌐 Visit our office for free evaluation</p>
+                <p style="margin-top: 15px;">Our team will contact you within 24 hours to schedule a free evaluation!</p>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        renderCars();
+    </script>
+</body>
+</html>
